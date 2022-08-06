@@ -1,8 +1,8 @@
 #include "Flooder.h"
 
-void Flooder::Initialize(HWND parent)
+void Flooder::Initialize(HWND parent, HINSTANCE appInstance)
 {
-	FRCommon::Initialize(parent);
+	FRCommon::Initialize(parent, appInstance);
 	mBtnStart = CreateWindow(
 		"BUTTON",                                               // Predefined class; Unicode assumed 
 		"START",                                                // Button text 
@@ -53,4 +53,8 @@ void Flooder::UpdateSharedData(SharedData* data) {
 
 void Flooder::SharedDataSynchronized() {
 	FRCommon::SharedDataSynchronized();
+}
+
+int Flooder::GetCounterpartyPid() {
+	return GetData().mRcvPid;
 }

@@ -34,6 +34,10 @@ LRESULT CALLBACK MyWindowCMessageLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 			mUserInterface->HandleClick(hwnd, uMsg, wParam, lParam);
 		}
 		break;
+	case WM_SIZE:
+		if (mUserInterface != NULL) {
+			mUserInterface->HandleSize(hwnd, uMsg, wParam, lParam);
+		}
 	case 512:
 	case 132:
 	case 32:
@@ -64,10 +68,10 @@ bool RegisterWindowClass(HINSTANCE hInstance)
 	return true;
 }
 
-void SetupUserInterface(HWND parent)
+void SetupUserInterface(HWND parent, HINSTANCE hInstance)
 {
 	if (mUserInterface != NULL) {
-		mUserInterface->Initialize(parent);
+		mUserInterface->Initialize(parent, hInstance);
 	}
 }
 
@@ -93,7 +97,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	ShowWindow(hwndMain, SW_SHOW);
 	UpdateWindow(hwndMain);
 
-	SetupUserInterface(hwndMain);
+	SetupUserInterface(hwndMain, hInstance);
 
 	while (GetMessage(&msg, NULL, 0, 0) != 0)
 	{

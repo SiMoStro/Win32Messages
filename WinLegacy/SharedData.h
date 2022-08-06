@@ -13,4 +13,10 @@ struct SharedData {
 	long mSndHndl;	
 	// Sender got shared data
 	bool mSndGotData;
+
+	void Reset() {
+		mRcvGotData = mSndGotData = false;
+		mRcvPid = mSndPid = 0;
+		mRcvHndl = mSndHndl = NULL;
+	}
 };

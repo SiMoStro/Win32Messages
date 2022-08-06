@@ -8,10 +8,16 @@ private:
 	HWND mBtnStart;
 	HWND mBtnStop;
 public:
-	void Initialize(HWND parent) override;
+	void Initialize(HWND parent, HINSTANCE appInstance) override;
+	
 	void HandleClick(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
+	
 	void BackgroundSingleCycle() override;
+	
 	void UpdateSharedData(SharedData* data) override;
+	
 	void SharedDataSynchronized() override;
+	
+	int GetCounterpartyPid() override;
 };
 

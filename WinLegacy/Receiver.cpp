@@ -1,8 +1,8 @@
 #include "Receiver.h"
 
-void Receiver::Initialize(HWND parent)
+void Receiver::Initialize(HWND parent, HINSTANCE appInstance)
 {
-	FRCommon::Initialize(parent);
+	FRCommon::Initialize(parent, appInstance);
 
 	StartBackgroundThread();
 }
@@ -15,4 +15,8 @@ void Receiver::UpdateSharedData(SharedData* data) {
 
 void Receiver::SharedDataSynchronized() {
 	FRCommon::SharedDataSynchronized();
+}
+
+int Receiver::GetCounterpartyPid() {
+	return GetData().mSndPid;
 }

@@ -4,10 +4,12 @@
 
 class Receiver : public FRCommon
 {
-	void Initialize(HWND parent) override;
+	void Initialize(HWND parent, HINSTANCE appInstance) override;
 
 	void UpdateSharedData(SharedData* data) override;
 
 	void SharedDataSynchronized() override;
+
+	int GetCounterpartyPid() override;
 };
 
