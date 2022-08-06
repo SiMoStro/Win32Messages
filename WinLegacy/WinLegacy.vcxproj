@@ -126,6 +126,7 @@
     <ResourceCompile Include="WinLegacy.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommonDef.h" />
     <ClInclude Include="Flooder.h" />
     <ClInclude Include="FRCommon.h" />
     <ClInclude Include="Receiver.h" />

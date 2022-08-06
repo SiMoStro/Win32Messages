@@ -6,17 +6,17 @@ class FRCommon
 {
 	private:
 		// Window and app instance
-		HWND mHwndStatus;
-		HINSTANCE mAppInstance;
+		HWND mHwndStatus = NULL;
+		HINSTANCE mAppInstance = NULL;
 
 		// background thread
-		long mThreadCycle;
-		LPDWORD mThreadId;
+		long mThreadCycle = 0;
+		LPDWORD mThreadId = 0;
 		HANDLE mThreadHndl = NULL;
-		bool mKeepBckThreadAlive;
+		bool mKeepBckThreadAlive = false;
 		
 		// Shared memory
-		int mSharedSize;
+		int mSharedSize = 0;
 		SharedData mData;
 		HANDLE hMapFile = NULL;
 		LPCTSTR pSharedMemoryView;
@@ -39,6 +39,8 @@ class FRCommon
 
 		SharedData GetData() { return mData; }
 
+		virtual void OneSecondCycle(){};
+
 	public:
 		static int mThreadSleep;
 	
@@ -56,12 +58,18 @@ class FRCommon
 
 		virtual void HandleClick(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){}
 
-		virtual void HandleSize(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		virtual void OnSize(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		bool GetBckThreadAlive() { return mKeepBckThreadAlive; }
 
 		virtual void SharedDataSynchronized();
 
 		void SetStatusText(const char* text);
+
+		virtual void OnDummyMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+		virtual void OnFreezeMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+		virtual void OnNotifyMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
 

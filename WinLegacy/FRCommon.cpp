@@ -78,8 +78,8 @@ void FRCommon::BackgroundSingleCycle() {
 				mSynchronized = false;
 				OpenSharedMemory();
 				SetStatusText("Lost connection - waiting counterparty...");
+				return;
 			}
-
 		}
 	}
 
@@ -92,6 +92,9 @@ void FRCommon::BackgroundSingleCycle() {
 			CloseHandle(hMapFile);
 			SharedDataSynchronized();
 		}		
+	}
+	else {
+		OneSecondCycle();
 	}
 }
 
@@ -123,7 +126,7 @@ void FRCommon::CreateStatusBar() {
 	SendMessage(mHwndStatus, WM_SIZE, 0, 0);
 }
 
-void FRCommon::HandleSize(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+void FRCommon::OnSize(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	if (mHwndStatus != NULL) {
 		SendMessage(mHwndStatus, WM_SIZE, 0, 0);
 	}
@@ -140,3 +143,15 @@ void FRCommon::SharedDataSynchronized() {
 	sprintf_s(status, "Cross-app synch complete; Snd: %i; Rcv: %i", mData.mSndPid, mData.mRcvPid);
 	SetStatusText(status);
 };
+
+void FRCommon::OnDummyMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+}
+
+void FRCommon::OnFreezeMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+}
+
+void FRCommon::OnNotifyMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+
+}

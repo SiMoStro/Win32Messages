@@ -5,8 +5,9 @@
 class Flooder : public FRCommon
 {
 private:
-	HWND mBtnStart;
-	HWND mBtnStop;
+	HWND mBtnStart, mBtnStop, mBtnFreeze;
+	bool mShouldSendMessages;
+
 public:
 	void Initialize(HWND parent, HINSTANCE appInstance) override;
 	
@@ -19,5 +20,7 @@ public:
 	void SharedDataSynchronized() override;
 	
 	int GetCounterpartyPid() override;
+
+	void OneSecondCycle() override;
 };
 

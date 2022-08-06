@@ -3,28 +3,31 @@
 #include "FRCommon.h"
 #include "Receiver.h"
 #include "Flooder.h"
+#include "CommonDef.h"
 
 WNDCLASS wc;
 FRCommon* mUserInterface;
 
-#define WM_USERSTART (WM_USER + 10)
-#define WM_USEREND (WM_USER + 20)
-#define WM_USERDUMMY (WM_USER + 30)
-
 LRESULT CALLBACK MyWindowCMessageLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	char buffer[256] = { 0 };
-
+	LRESULT res = 0;
 	switch (uMsg)
 	{
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	case WM_GETMINMAXINFO:
+	{
+		LPMINMAXINFO lpMMI = (LPMINMAXINFO)lParam;
+		lpMMI->ptMinTrackSize.x = 300;
+		lpMMI->ptMinTrackSize.y = 200;
+		break;
+	}
 	case WM_PAINT:
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hwnd, &ps);
-		// All painting occurs here, between BeginPaint and EndPaint.
 		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 2));
 		EndPaint(hwnd, &ps);
 		break;
@@ -36,19 +39,29 @@ LRESULT CALLBACK MyWindowCMessageLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARA
 		break;
 	case WM_SIZE:
 		if (mUserInterface != NULL) {
-			mUserInterface->HandleSize(hwnd, uMsg, wParam, lParam);
+			mUserInterface->OnSize(hwnd, uMsg, wParam, lParam);
 		}
-	case 512:
-	case 132:
-	case 32:
-		return DefWindowProc(hwnd, uMsg, wParam, lParam);
-
+		break;
+	case WM_USERDUMMY:
+		if (mUserInterface != NULL) {
+			mUserInterface->OnDummyMessage(hwnd, uMsg, wParam, lParam);
+		}
+		break;
+	case WM_USERFREEZE:
+		if (mUserInterface != NULL) {
+			mUserInterface->OnFreezeMessage(hwnd, uMsg, wParam, lParam);
+		}
+		break;
+	case WM_NOTIFY:
+		if (mUserInterface != NULL) {
+			OutputDebugString(buffer);
+			mUserInterface->OnNotifyMessage(hwnd, uMsg, wParam, lParam);
+		}
+		break;
 	default:
-		//sprintf_s(buffer, "Message: %d; dest: %p; (%p, %p)\n", uMsg, hwnd, wParam, lParam);
-		//OutputDebugString(buffer);
-		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+		res = DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
-	return 0;
+	return res;
 }
 
 bool RegisterWindowClass(HINSTANCE hInstance)
@@ -62,7 +75,6 @@ bool RegisterWindowClass(HINSTANCE hInstance)
 	wc.cbWndExtra = 0;
 	wc.hIcon = LoadIcon((HINSTANCE)NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor((HINSTANCE)NULL, IDC_ARROW);
-	//wc.lpszMenuName = "MainMenu";
 
 	if (!RegisterClass(&wc)) return false;
 	return true;
@@ -91,7 +103,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 	if (hPrevInstance) return 1;
 	if (!RegisterWindowClass(hInstance)) return FALSE;
 
-	HWND hwndMain = CreateWindow(wc.lpszClassName, "WinMain", WS_OVERLAPPEDWINDOW, 100, 100, 400, 300, NULL, NULL, hInstance, (LPVOID)NULL);
+	HWND hwndMain = CreateWindow(wc.lpszClassName, "WinMain", WS_OVERLAPPEDWINDOW, 100, 100, 320, 240, NULL, NULL, hInstance, (LPVOID)NULL);
 	if (!hwndMain) return FALSE;
 
 	ShowWindow(hwndMain, SW_SHOW);

@@ -49,5 +49,8 @@
     <ClInclude Include="SharedData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommonDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
