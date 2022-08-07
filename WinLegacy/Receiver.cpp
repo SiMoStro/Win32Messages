@@ -5,6 +5,9 @@
 void Receiver::Initialize(HWND parent, HINSTANCE appInstance)
 {
 	FRCommon::Initialize(parent, appInstance);
+
+	SetWindowText(parent, "Receiver");
+
 	int widgetsLeft = 10;
 	int widgetsTop = 10;
 	int widgetsHeight = 22;

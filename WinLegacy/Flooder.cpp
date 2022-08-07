@@ -4,6 +4,9 @@
 void Flooder::Initialize(HWND parent, HINSTANCE appInstance)
 {
 	FRCommon::Initialize(parent, appInstance);
+
+	SetWindowText(parent, "Flooder");
+
 	mBtnStart = CreateWindow("BUTTON", "Start", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 		10, 10, 100, 40, parent, NULL, (HINSTANCE)GetWindowLongPtr(parent, GWLP_HINSTANCE), NULL);
 
